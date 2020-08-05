@@ -1,21 +1,29 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const cookieParser = require('cookie-parser');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
 
+// Route files
+const auth = require('./routes/auth');
+//const users = require('./routes/users');
+const test = require('./routes/test');
+
 //Load env variable
 dotenv.config({ path: './config/config.env' });
-connectDB();
 
+connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Implement Middleware
 app.use(express.json());
+app.use(cookieParser());
 
-app.get('/', () => {
-    console.log('hello');
-})
+// Mount routers
+app.use('/api/v1/auth', auth);
+app.use('/api/v1/test', test);
 
 app.use(errorHandler);
 
