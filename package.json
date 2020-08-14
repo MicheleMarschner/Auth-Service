@@ -14,8 +14,15 @@
     "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "faker": "^4.1.0",
+    "geocode": "0.0.3",
+    "json-server": "^0.16.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.9.27"
+    "lodash": "^4.17.19",
+    "moment": "^2.27.0",
+    "mongoose": "^5.9.27",
+    "node-geocoder": "^3.27.0",
+    "slugify": "^1.4.5"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
