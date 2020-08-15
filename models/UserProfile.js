@@ -2,10 +2,12 @@ const mongoose = require('mongoose');
 const geocoder = require('../utils/geocoder');
 
 const UserProfileSchema = new mongoose.Schema({
-    _id: { type: String },
-    //user_id?? or foreign key with auth_id
+    user_id: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+        required: true
+    },
     created_at: {
-        //??from UserSchema
         type: Date,
         default: Date.now
     },
@@ -22,13 +24,8 @@ const UserProfileSchema = new mongoose.Schema({
     phone: {
         type: Number,
         required: [true, 'Please add a phone']
-        //?? phone
-       /* match: [, 'Please add a valid phone number']*/
     },
-    address: {
-        type: String,
-        required: [true, 'Please add a name']
-    },
+    address: String,
     location: {
         // GeoJSON Point
         type: {
@@ -40,27 +37,20 @@ const UserProfileSchema = new mongoose.Schema({
           index: '2dsphere'
         },
         formattedAddress: String,
-        street: String,
+        street_number: String,
+        street_name: String,
         city: String,
         state: String,
         zipcode: String,
         country: String
     },
-    //??"dob": new Date(“<YYYY-mm-dd>”),
     dob: {
         type: Date,
         default: Date.now
     },
     short_profile: String,
-    profile_picture: {
-        type: String,
-        required: [true, 'Please add a name']
-    },
-    category: {
-        type: Array,
-        //enum: []
-    },
-    //is it a user profile thing?
+    profile_picture: String,
+    category: Array,
     friend_list: Array,
     role: {
         type: String,
@@ -86,30 +76,17 @@ UserProfileSchema.pre('save', async function(next) {
       type: 'Point',
       coordinates: [loc[0].longitude, loc[0].latitude],
       formattedAddress: loc[0].formattedAddress,
-      street: loc[0].streetName,
+      street_number: loc[0].streetNumber,
+      street_name: loc[0].streetName,
       city: loc[0].city,
       state: loc[0].stateCode,
       zipcode: loc[0].zipcode,
       country: loc[0].countryCode
     };
   
-    //?? do we need the address?
     // Do not save address in DB
     this.address = undefined;
     next();
 });
-
-/*
-UserProfileSchema.virtual('full_name').get(function() {
-return this.first_name + ' ' + this.last_name
-})
-
-StorySchema.virtual('full_name').set(function(name) {
-let str = name.split(' ')
-
-this.firstName = str[0]
-this.lastName = str[1]
-})
-*/
 
 module.exports = mongoose.model('UserProfile', UserProfileSchema);
