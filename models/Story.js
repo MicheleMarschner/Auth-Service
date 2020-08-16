@@ -71,7 +71,7 @@ const StorySchema = new mongoose.Schema({
 
 // Create Story slug from the name
 StorySchema.pre('save', function(next) {
-    this.slug = slugify(this.name, { lower: true });
+    this.slug = slugify(this.title, { lower: true });
     next();
 });
 
