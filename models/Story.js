@@ -28,12 +28,6 @@ const StorySchema = new mongoose.Schema({
         type: String,
         enum: ['draft', 'published', 'achieved']
     },
-    like_count: Number,
-    //?? or reactions? or separate?
-    likes: [{
-            user_id: { type: mongoose.Schema.ObjectId, ref: 'UserProfile'},
-            active: false
-        }],
     comment_count: Number,
     comments: [{
         author_id: {
@@ -54,6 +48,20 @@ const StorySchema = new mongoose.Schema({
             default: true
         }
     }],
+    like_count: Number,
+    //?? or reactions? or separate?
+    likes: [
+        {
+            user_id: { 
+                type: mongoose.Schema.ObjectId, 
+                ref: 'UserProfile'
+            },
+            active: {
+                type: Boolean,
+                default: false
+            }
+        }
+    ],
     category: {
         type: Array,
         enum: []
