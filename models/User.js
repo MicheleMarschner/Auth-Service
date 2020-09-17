@@ -16,6 +16,15 @@ const UserSchema = new mongoose.Schema({
     },
     password: { type: String },
   },
+  google: {
+    id: {
+      type: String,
+    },
+    email: {
+      type: String,
+      lowercase: true,
+    },
+  },
   name: { type: String, required: [true, 'Name is required'] },
   lastName: { type: String, required: [true, 'Lastname is required'] },
   status: {
