@@ -1,26 +1,22 @@
+// Imports
 const express = require('express');
-const router = express.Router();
 const {
-    register,
-    login,
-    /*logout, */
-    getMe,
-    forgotPassword,
-    /*resetPassword,*/
-    updateDetails,
-    updatePassword
-  } = require('../controllers/auth');
-
-  const { protect } = require('../middleware/auth');
-
-router.post('/register', register);
-router.post('/login', login);
-/* router.get('/logout', logout); */
-router.get('/me', protect, getMe);
-router.put('/updatedetails', protect, updateDetails);
-router.put('/updatepassword', protect, updatePassword);
-router.post('/forgotpassword', forgotPassword);
-/*
-router.put('/resetpassword/:resettoken', resetPassword);*/
-
+  validateBody,
+  schemas: { authSchema, loginSchema },
+} = require('../utils/validation');
+const passport = require('passport');
+const passportConfig = require('../passport/passport-config');
+// Passport strategies assignment
+const passportJWT = passport.authenticate('jwt', { session: false });
+const passportLocal = passport.authenticate('local', { session: false });
+// Import controllers
+const { signUp, signIn, user, setStatus } = require('../controllers/auth');
+// Create router from express
+const router = express.Router();
+// Routes mapping
+router.route('/signup').post(validateBody(authSchema), signUp);
+router.route('/signin').post(validateBody(loginSchema), passportLocal, signIn);
+router.route('/user').get(passportJWT, user);
+router.route('/set-status').patch(passportJWT, setStatus);
+// Export module
 module.exports = router;
