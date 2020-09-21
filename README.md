@@ -4,6 +4,8 @@
 Part of my Microservice architecture where I am creating standalone and reusable programmes. 
 The Auth service is used to authenticate and grant a token by implementing local (email & password) and Google. 
 
+![Authentication Service - picture](./public/media/Pciture-Auth.png)
+
 ## MVP - features
 
  **Current**
